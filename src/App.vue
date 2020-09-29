@@ -7,6 +7,35 @@
     </button>
   </nav>
 
+  <div id="search-area">
+    <header>
+      <span class="material-icons"> clear </span>
+
+      <div class="search-group">
+        <div class="input-group">
+          <span class="material-icons"> search </span>
+          <input type="text" placeholder="search location" />
+        </div>
+        <button>Search</button>
+      </div>
+    </header>
+
+    <div class="locations">
+      <article class="location">
+        <p>London</p>
+        <span class="material-icons"> keyboard_arrow_right </span>
+      </article>
+      <article class="location">
+        <p>Barcelona</p>
+        <span class="material-icons"> keyboard_arrow_right </span>
+      </article>
+      <article class="location">
+        <p>Long Beach</p>
+        <span class="material-icons"> keyboard_arrow_right </span>
+      </article>
+    </div>
+  </div>
+
   <section id="today-forecast">
     <img src="./assets/Shower.png" alt="sunny with clouds" />
     <p class="temperature">
@@ -161,6 +190,104 @@ nav .search-button {
 nav .gps-button {
   padding: 10px;
   border-radius: 50%;
+}
+
+/*#endregion*/
+
+/*#region Search area*/
+#search-area {
+  position: fixed;
+  background: #1e213a;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+
+  padding: 1rem;
+}
+
+#search-area header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#search-area header > .material-icons {
+  color: white;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+#search-area .search-group {
+  display: flex;
+  margin-top: 2.5rem;
+}
+
+#search-area .input-group {
+  border: 1px solid #e7e7eb;
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  padding: 1rem;
+  margin-right: 1.5rem;
+}
+
+#search-area .input-group .material-icons {
+  color: #616475;
+  margin-right: 1rem;
+}
+
+#search-area .input-group input {
+  background: transparent;
+  border: none;
+  font-size: 1.6rem;
+  color: white;
+}
+
+#search-area .search-group button {
+  background: #3c47e9;
+  border: none;
+
+  font-weight: 500;
+  font-size: 1.6rem;
+
+  color: #e7e7eb;
+
+  padding: 0.5rem 1.5rem;
+
+  cursor: pointer;
+}
+
+.locations {
+  margin-top: 2rem;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 2rem 1rem;
+  margin-bottom: 2rem;
+
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+
+.location:hover {
+  border: 1px solid #616475;
+}
+
+.location p {
+  font-weight: 500;
+  font-size: 1.6rem;
+
+  color: #e7e7eb;
+}
+
+.location .material-icons {
+  color: #616475;
 }
 
 /*#endregion*/
