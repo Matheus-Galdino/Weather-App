@@ -1,13 +1,15 @@
 <template>
   <nav>
-    <button class="search-button">Search for places</button>
+    <button class="search-button" @click="showSearchArea = true">
+      Search for places
+    </button>
 
     <button class="gps-button">
       <span class="material-icons"> gps_fixed </span>
     </button>
   </nav>
 
-  <SearchArea />
+  <SearchArea v-if="showSearchArea" @close-search="showSearchArea = false" />
 
   <section id="today-forecast">
     <img src="./assets/Shower.png" alt="sunny with clouds" />
@@ -83,6 +85,11 @@ export default {
   components: {
     Forecast,
     SearchArea,
+  },
+  data() {
+    return {
+      showSearchArea: false,
+    };
   },
 };
 </script>

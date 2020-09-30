@@ -1,30 +1,43 @@
 <template>
   <div id="search-area">
     <header>
-      <span class="material-icons"> clear </span>
+      <span class="material-icons" @click="$emit('close-search')"> clear </span>
 
       <div class="search-group">
         <div class="input-group">
           <span class="material-icons"> search </span>
-          <input type="text" placeholder="search location" />
+          <input type="seach" placeholder="search location" v-model="query" />
         </div>
-        <button>Search</button>
+        <button @click="getLocations">Search</button>
       </div>
     </header>
 
     <div class="locations">
-      <Location />
+      <Location v-for="local in locations" :local="local" :key="local.woeid" />
     </div>
   </div>
 </template>
 
 <script>
+import API from "../API";
 import Location from "./Location";
 
 export default {
   name: "SearchArea",
   components: {
     Location,
+  },
+  data() {
+    return {
+      locations: [],
+      query: "",
+    };
+  },
+  methods: {
+    async getLocations() {
+      let result = await API.searchLocation(this.query);
+      this.locations = result;
+    },
   },
 };
 </script>
@@ -38,7 +51,6 @@ export default {
   right: 0;
   bottom: 0;
   z-index: 1000;
-  display: none;
 
   padding: 1rem;
 }
@@ -79,6 +91,7 @@ export default {
   border: none;
   font-size: 1.6rem;
   color: white;
+  flex-grow: 1;
 }
 
 #search-area .search-group button {

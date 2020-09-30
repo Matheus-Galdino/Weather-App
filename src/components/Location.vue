@@ -1,12 +1,15 @@
 <template>
   <article class="location">
-    <p>London</p>
+    <p>{{ local.title }}</p>
     <span class="material-icons"> keyboard_arrow_right </span>
   </article>
 </template>
 
 <script>
-export default {};
+export default {
+  name: "Location",
+  props: ["local"],
+};
 </script>
 
 <style>
