@@ -3,13 +3,13 @@
     <header>
       <span class="material-icons" @click="$emit('close-search')"> clear </span>
 
-      <div class="search-group">
+      <form class="search-group" @submit.prevent="getLocations">
         <div class="input-group">
           <span class="material-icons"> search </span>
           <input type="seach" placeholder="search location" v-model="query" />
         </div>
-        <button @click="getLocations">Search</button>
-      </div>
+        <button>Search</button>
+      </form>
     </header>
 
     <div class="locations">

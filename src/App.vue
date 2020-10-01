@@ -1,10 +1,10 @@
 <template>
-  <nav>
+  <nav v-if="locationForecast[0]">
     <button class="search-button" @click="showSearchArea = true">
       Search for places
     </button>
 
-    <button class="gps-button">
+    <button class="gps-button" @click="getUserLocation">
       <span class="material-icons"> gps_fixed </span>
     </button>
   </nav>
@@ -15,7 +15,14 @@
     @forecast-location="forecast($event)"
   />
 
-  <section id="today-forecast">
+  <img
+    src="./assets/loading.gif"
+    alt="loading"
+    id="loading"
+    v-if="!locationForecast[0]"
+  />
+
+  <section id="today-forecast" v-if="locationForecast[0]">
     <img src="./assets/Shower.png" alt="sunny with clouds" />
     <p class="temperature">
       <span>
@@ -37,7 +44,7 @@
     </p>
   </section>
 
-  <section id="aditional-details">
+  <section id="aditional-details" v-if="locationForecast[0]">
     <div class="forecasts">
       <Forecast forecast="1" />
     </div>
@@ -77,7 +84,7 @@
     </div>
   </section>
 
-  <footer>Matheus Carvalho @DevChallenges.io</footer>
+  <footer v-if="locationForecast[0]">Matheus Carvalho @DevChallenges.io</footer>
 </template>
 
 <script>
@@ -114,9 +121,12 @@ export default {
       );
       this.forecast(this.location[0]);
     },
+    getUserLocation() {
+      navigator.geolocation.getCurrentPosition(this.searchByLattLong);
+    },
   },
   created() {
-    navigator.geolocation.getCurrentPosition(this.searchByLattLong);
+    this.getUserLocation();
   },
 };
 </script>
@@ -126,6 +136,9 @@ export default {
   max-width: 100vw;
   min-height: 100vh;
   background: #100e1d;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /*#region Nav*/
@@ -167,6 +180,10 @@ nav .gps-button {
 }
 
 /*#endregion*/
+
+#loading {
+  align-self: center;
+}
 
 /*#region Today forecast*/
 
