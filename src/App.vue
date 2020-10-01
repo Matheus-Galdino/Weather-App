@@ -9,35 +9,37 @@
     </button>
   </nav>
 
-  <SearchArea v-if="showSearchArea" @close-search="showSearchArea = false" />
+  <SearchArea
+    v-if="showSearchArea"
+    @close-search="showSearchArea = false"
+    @forecast-location="forecast($event)"
+  />
 
   <section id="today-forecast">
     <img src="./assets/Shower.png" alt="sunny with clouds" />
     <p class="temperature">
-      <span> 15 </span>
+      <span>
+        {{ todayForecast.the_temp.toFixed(1) }}
+      </span>
       <small>ºC</small>
     </p>
 
-    <h2>Shower</h2>
+    <h2>{{ todayForecast.weather_state_name }}</h2>
 
     <p class="date">
       Today
       <span> . </span>
-      Fri. 5 jun
+      Sun, 30 Jun
     </p>
 
     <p class="location">
-      <span class="material-icons"> location_on </span> Helsinki
+      <span class="material-icons"> location_on </span> {{ location.title }}
     </p>
   </section>
 
   <section id="aditional-details">
     <div class="forecasts">
-      <Forecast />
-      <Forecast />
-      <Forecast />
-      <Forecast />
-      <Forecast />
+      <Forecast forecast="1" />
     </div>
 
     <div class="highlights">
@@ -45,30 +47,32 @@
 
       <section class="highlight">
         <h3>Wind status</h3>
-        <p>7 <span> mph</span></p>
+        <p>{{ todayForecast.wind_speed.toFixed(0) }} <span> mph</span></p>
         <small> <span class="material-icons"> navigation </span> WSW </small>
       </section>
 
       <section class="highlight">
         <h3>Humidity</h3>
-        <p>84<span> % </span></p>
+        <p>{{ todayForecast.humidity.toFixed(0) }}<span> % </span></p>
         <div class="progress-group">
           <!-- <small style="alignself: start">0</small>
           <small style="justifyself: center">50</small>
           <small>100</small> -->
-          <progress value="84" min="0" max="100">Humidity 84%</progress>
+          <progress :value="todayForecast.humidity" min="0" max="100">
+            Humidity {{ todayForecast.humidity.toFixed(0) }}%
+          </progress>
           <!-- <small>%</small> -->
         </div>
       </section>
 
       <section class="highlight">
         <h3>Visibility</h3>
-        <p>6,4 <span> miles </span></p>
+        <p>{{ todayForecast.visibility.toFixed(0) }} <span> miles </span></p>
       </section>
 
       <section class="highlight">
         <h3>Air Pressure</h3>
-        <p>998 <span>mb</span></p>
+        <p>{{ todayForecast.air_pressure.toFixed(0) }} <span>mb</span></p>
       </section>
     </div>
   </section>
@@ -77,6 +81,7 @@
 </template>
 
 <script>
+import API from "./API";
 import Forecast from "./components/Forecast";
 import SearchArea from "./components/SearchArea";
 
@@ -89,7 +94,29 @@ export default {
   data() {
     return {
       showSearchArea: false,
+      location: {},
+      locationForecast: {},
+      todayForecast: {},
     };
+  },
+  methods: {
+    async forecast(location) {
+      this.showSearchArea = false;
+      this.location = await API.getLocationForecast(location.woeid);
+      this.locationForecast = this.location.consolidated_weather;
+      this.todayForecast = this.locationForecast[0];
+      this.locationForecast.splice(0, 1);
+    },
+    async searchByLattLong(position) {
+      this.location = await API.searchLocationByLattLong(
+        position.coords.latitude,
+        position.coords.longitude
+      );
+      this.forecast(this.location[0]);
+    },
+  },
+  created() {
+    navigator.geolocation.getCurrentPosition(this.searchByLattLong);
   },
 };
 </script>
@@ -208,6 +235,10 @@ nav .gps-button {
   display: flex;
   align-items: center;
   font-weight: 600;
+}
+
+#today-forecast .location .material-icons {
+  margin-right: 0.5rem;
 }
 
 /*#endregion*/

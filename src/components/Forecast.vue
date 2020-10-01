@@ -12,6 +12,7 @@
 <script>
 export default {
   name: "Forecast",
+  props: ["forecast"],
 };
 </script>
 

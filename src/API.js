@@ -6,8 +6,11 @@ const basicFetch = async (endPoint) => {
 };
 
 export default {
-  searchLocation: async (query) => {
+  searchLocationByName: async (query) => {
     return basicFetch(`/location/search/?query=${query}`);
+  },
+  searchLocationByLattLong: async (latt, long) => {
+    return basicFetch(`/location/search?lattlong=${latt},${long}`);
   },
   getLocationForecast: async (woeid) => {
     return basicFetch(`/location/${woeid}`);

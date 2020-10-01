@@ -1,5 +1,5 @@
 <template>
-  <article class="location">
+  <article class="location" @click="$emit('selected-location', local)">
     <p>{{ local.title }}</p>
     <span class="material-icons"> keyboard_arrow_right </span>
   </article>
@@ -34,9 +34,11 @@ export default {
   font-size: 1.6rem;
 
   color: #e7e7eb;
+  pointer-events: none;
 }
 
 .location .material-icons {
   color: #616475;
+  pointer-events: none;
 }
 </style>

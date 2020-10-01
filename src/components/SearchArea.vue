@@ -13,7 +13,12 @@
     </header>
 
     <div class="locations">
-      <Location v-for="local in locations" :local="local" :key="local.woeid" />
+      <Location
+        v-for="local in locations"
+        :local="local"
+        :key="local.woeid"
+        @selected-location="$emit('forecast-location', $event)"
+      />
     </div>
   </div>
 </template>
@@ -35,7 +40,7 @@ export default {
   },
   methods: {
     async getLocations() {
-      let result = await API.searchLocation(this.query);
+      let result = await API.searchLocationByName(this.query);
       this.locations = result;
     },
   },
