@@ -17,13 +17,6 @@
       class="lateral-view"
     />
 
-    <img
-      src="./assets/loading.gif"
-      alt="loading"
-      id="loading"
-      v-if="!locationForecast[0]"
-    />
-
     <section id="today-forecast" v-if="locationForecast[0]">
       <img :src="getWeatherImage" alt="sunny with clouds" />
       <p class="temperature">
@@ -46,6 +39,13 @@
       </p>
     </section>
   </div>
+
+  <img
+    src="./assets/loading.gif"
+    alt="loading"
+    id="loading"
+    v-if="!locationForecast[0]"
+  />
 
   <div class="right-container">
     <section id="aditional-details" v-if="locationForecast[0]">
@@ -201,7 +201,9 @@ nav .gps-button {
 /*#endregion*/
 
 #loading {
-  align-self: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
 }
 
 /*#region Today forecast*/
@@ -413,6 +415,7 @@ footer {
 
   #aditional-details {
     padding: 30px 150px 0;
+    margin-bottom: 20px;
   }
 
   .forecasts {
