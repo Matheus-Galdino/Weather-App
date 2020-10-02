@@ -23,7 +23,7 @@
   />
 
   <section id="today-forecast" v-if="locationForecast[0]">
-    <img src="./assets/Shower.png" alt="sunny with clouds" />
+    <img :src="getWeatherImage" alt="sunny with clouds" />
     <p class="temperature">
       <span>
         {{ todayForecast.the_temp.toFixed(1) }}
@@ -36,7 +36,7 @@
     <p class="date">
       Today
       <span> . </span>
-      Sun, 30 Jun
+      {{ getPredictionDate }}
     </p>
 
     <p class="location">
@@ -46,7 +46,7 @@
 
   <section id="aditional-details" v-if="locationForecast[0]">
     <div class="forecasts">
-      <Forecast forecast="1" />
+      <Forecast v-for="f in locationForecast" :forecast="f" :key="f.id" />
     </div>
 
     <div class="highlights">
@@ -62,13 +62,9 @@
         <h3>Humidity</h3>
         <p>{{ todayForecast.humidity.toFixed(0) }}<span> % </span></p>
         <div class="progress-group">
-          <!-- <small style="alignself: start">0</small>
-          <small style="justifyself: center">50</small>
-          <small>100</small> -->
           <progress :value="todayForecast.humidity" min="0" max="100">
             Humidity {{ todayForecast.humidity.toFixed(0) }}%
           </progress>
-          <!-- <small>%</small> -->
         </div>
       </section>
 
@@ -123,6 +119,18 @@ export default {
     },
     getUserLocation() {
       navigator.geolocation.getCurrentPosition(this.searchByLattLong);
+    },
+  },
+  computed: {
+    getWeatherImage() {
+      return require(`./assets/${this.todayForecast.weather_state_name.replace(
+        " ",
+        ""
+      )}.png`);
+    },
+    getPredictionDate() {
+      const today = new Date(Date.now());
+      return today.toDateString().slice(0, -4).trim();
     },
   },
   created() {

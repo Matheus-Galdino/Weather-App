@@ -1,11 +1,11 @@
 <template>
   <section class="forecast">
-    <h4>Tomorrow</h4>
-    <img src="../assets/Sleet.png" />
-    <p>
-      16ºC
-      <span class="minimun">11ºC</span>
-    </p>
+    <h4>{{ getPredictionDate }}</h4>
+    <img :src="getWeatherImage" />
+    <div class="predictions">
+      <p>{{ forecast.max_temp.toFixed(0) }}ºC</p>
+      <p class="minimun">{{ forecast.min_temp.toFixed(0) }}ºC</p>
+    </div>
   </section>
 </template>
 
@@ -13,6 +13,36 @@
 export default {
   name: "Forecast",
   props: ["forecast"],
+  methods: {
+    addDays(date, days) {
+      var result = new Date(date);
+      result.setDate(result.getDate() + days);
+      return result;
+    },
+    isSameDay(dateA, dateB) {
+      return (
+        dateA.getFullYear() === dateB.getFullYear() &&
+        dateA.getMonth() === dateB.getMonth() &&
+        dateA.getDate() === dateB.getDate()
+      );
+    },
+  },
+  computed: {
+    getWeatherImage() {
+      return require(`../assets/${this.forecast.weather_state_name.replace(
+        " ",
+        ""
+      )}.png`);
+    },
+    getPredictionDate() {
+      const predictionDate = new Date(this.forecast.applicable_date);
+      const tomorrow = this.addDays(Date.now(), 1);
+
+      return this.isSameDay(predictionDate, tomorrow)
+        ? "Tomorrow"
+        : predictionDate.toDateString().slice(0, -4).trim();
+    },
+  },
 };
 </script>
 
@@ -21,7 +51,7 @@ export default {
   margin: 0 10vw;
   padding: 0 1rem;
   display: grid;
-  column-gap: 1rem;
+  column-gap: 2rem;
   row-gap: 3rem;
   justify-items: center;
   grid-template-columns: 1fr 1fr;
@@ -29,9 +59,13 @@ export default {
 
 .forecast {
   background: #1e213a;
-  padding: 2rem 3rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
+}
+
+.predictions {
+  display: flex;
 }
 
 .forecast p,
