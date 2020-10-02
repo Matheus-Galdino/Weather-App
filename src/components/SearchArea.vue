@@ -1,12 +1,12 @@
 <template>
   <div id="search-area">
     <header>
-      <span class="material-icons" @click="$emit('close-search')"> clear </span>
+      <span class="material-icons" @click="close"> clear </span>
 
       <form class="search-group" @submit.prevent="getLocations">
         <div class="input-group">
           <span class="material-icons"> search </span>
-          <input type="seach" placeholder="search location" v-model="query" />
+          <input type="search" placeholder="search location" v-model="query" />
         </div>
         <button>Search</button>
       </form>
@@ -19,6 +19,14 @@
         :key="local.woeid"
         @selected-location="$emit('forecast-location', $event)"
       />
+    </div>
+
+    <div class="no-result-container" v-if="hasSearched && !locations[0]">
+      <img src="../assets/undraw_weather.svg" alt="couldn't find a location" />
+      <p>
+        Couldn't find any location. <br />
+        Try typing another name
+      </p>
     </div>
   </div>
 </template>
@@ -36,12 +44,17 @@ export default {
     return {
       locations: [],
       query: "",
+      hasSearched: false,
     };
   },
   methods: {
     async getLocations() {
-      let result = await API.searchLocationByName(this.query);
-      this.locations = result;
+      this.hasSearched = true;
+      this.locations = await API.searchLocationByName(this.query);
+    },
+    close() {
+      this.hasSearched = false;
+      this.$emit("close-search");
     },
   },
 };
@@ -111,6 +124,26 @@ export default {
   padding: 0.5rem 1.5rem;
 
   cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+
+#search-area .search-group button:hover {
+  background: #1926e0;
+}
+
+.no-result-container {
+  margin-top: 4rem;
+}
+
+.no-result-container img {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.no-result-container p {
+  font-size: 3rem;
+  color: white;
+  text-align: center;
 }
 
 .locations {

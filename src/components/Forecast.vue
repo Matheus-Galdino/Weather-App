@@ -48,10 +48,11 @@ export default {
 
 <style>
 .forecasts {
-  margin: 0 10vw;
-  padding: 0 1rem;
+  width: 70%;
+  margin: 0 auto;
+  padding: 0 2rem;
   display: grid;
-  column-gap: 2rem;
+  column-gap: 1rem;
   row-gap: 3rem;
   justify-items: center;
   grid-template-columns: 1fr 1fr;

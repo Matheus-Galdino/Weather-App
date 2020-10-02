@@ -170,6 +170,11 @@ nav button {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
   cursor: pointer;
+  transition: all 0.2s ease-out;
+}
+
+nav button:hover {
+  background: #5d5f67;
 }
 
 nav .search-button {
