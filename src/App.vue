@@ -1,86 +1,92 @@
 <template>
-  <nav v-if="locationForecast[0]">
-    <button class="search-button" @click="showSearchArea = true">
-      Search for places
-    </button>
+  <div class="left-container">
+    <nav v-if="locationForecast[0]">
+      <button class="search-button" @click="showSearchArea = true">
+        Search for places
+      </button>
 
-    <button class="gps-button" @click="getUserLocation">
-      <span class="material-icons"> gps_fixed </span>
-    </button>
-  </nav>
+      <button class="gps-button" @click="getUserLocation">
+        <span class="material-icons"> gps_fixed </span>
+      </button>
+    </nav>
 
-  <SearchArea
-    v-if="showSearchArea"
-    @close-search="showSearchArea = false"
-    @forecast-location="forecast($event)"
-  />
+    <SearchArea
+      v-if="showSearchArea"
+      @close-search="showSearchArea = false"
+      @forecast-location="forecast($event)"
+      class="lateral-view"
+    />
 
-  <img
-    src="./assets/loading.gif"
-    alt="loading"
-    id="loading"
-    v-if="!locationForecast[0]"
-  />
+    <img
+      src="./assets/loading.gif"
+      alt="loading"
+      id="loading"
+      v-if="!locationForecast[0]"
+    />
 
-  <section id="today-forecast" v-if="locationForecast[0]">
-    <img :src="getWeatherImage" alt="sunny with clouds" />
-    <p class="temperature">
-      <span>
-        {{ todayForecast.the_temp.toFixed(1) }}
-      </span>
-      <small>ºC</small>
-    </p>
+    <section id="today-forecast" v-if="locationForecast[0]">
+      <img :src="getWeatherImage" alt="sunny with clouds" />
+      <p class="temperature">
+        <span>
+          {{ todayForecast.the_temp.toFixed(1) }}
+        </span>
+        <small>ºC</small>
+      </p>
 
-    <h2>{{ todayForecast.weather_state_name }}</h2>
+      <h2>{{ todayForecast.weather_state_name }}</h2>
 
-    <p class="date">
-      Today
-      <span> . </span>
-      {{ getPredictionDate }}
-    </p>
+      <p class="date">
+        Today
+        <span> . </span>
+        {{ getPredictionDate }}
+      </p>
 
-    <p class="location">
-      <span class="material-icons"> location_on </span> {{ location.title }}
-    </p>
-  </section>
+      <p class="location">
+        <span class="material-icons"> location_on </span> {{ location.title }}
+      </p>
+    </section>
+  </div>
 
-  <section id="aditional-details" v-if="locationForecast[0]">
-    <div class="forecasts">
-      <Forecast v-for="f in locationForecast" :forecast="f" :key="f.id" />
-    </div>
+  <div class="right-container">
+    <section id="aditional-details" v-if="locationForecast[0]">
+      <div class="forecasts">
+        <Forecast v-for="f in locationForecast" :forecast="f" :key="f.id" />
+      </div>
 
-    <div class="highlights">
       <h2>Today's Highlights</h2>
+      <div class="highlights">
+        <section class="highlight">
+          <h3>Wind status</h3>
+          <p>{{ todayForecast.wind_speed.toFixed(0) }} <span> mph</span></p>
+          <small> <span class="material-icons"> navigation </span> WSW </small>
+        </section>
 
-      <section class="highlight">
-        <h3>Wind status</h3>
-        <p>{{ todayForecast.wind_speed.toFixed(0) }} <span> mph</span></p>
-        <small> <span class="material-icons"> navigation </span> WSW </small>
-      </section>
+        <section class="highlight">
+          <h3>Humidity</h3>
+          <p>{{ todayForecast.humidity.toFixed(0) }}<span> % </span></p>
+          <div class="progress-group">
+            <progress :value="todayForecast.humidity" min="0" max="100">
+              Humidity {{ todayForecast.humidity.toFixed(0) }}%
+            </progress>
+          </div>
+        </section>
 
-      <section class="highlight">
-        <h3>Humidity</h3>
-        <p>{{ todayForecast.humidity.toFixed(0) }}<span> % </span></p>
-        <div class="progress-group">
-          <progress :value="todayForecast.humidity" min="0" max="100">
-            Humidity {{ todayForecast.humidity.toFixed(0) }}%
-          </progress>
-        </div>
-      </section>
+        <section class="highlight">
+          <h3>Visibility</h3>
+          <p>{{ todayForecast.visibility.toFixed(0) }} <span> miles </span></p>
+        </section>
 
-      <section class="highlight">
-        <h3>Visibility</h3>
-        <p>{{ todayForecast.visibility.toFixed(0) }} <span> miles </span></p>
-      </section>
+        <section class="highlight">
+          <h3>Air Pressure</h3>
+          <p>{{ todayForecast.air_pressure.toFixed(0) }} <span>mb</span></p>
+        </section>
+      </div>
+    </section>
 
-      <section class="highlight">
-        <h3>Air Pressure</h3>
-        <p>{{ todayForecast.air_pressure.toFixed(0) }} <span>mb</span></p>
-      </section>
-    </div>
-  </section>
-
-  <footer v-if="locationForecast[0]">Matheus Carvalho @DevChallenges.io</footer>
+    <footer v-if="locationForecast[0]">
+      Matheus Carvalho @DevChallenges.io
+    </footer>
+  </div>
 </template>
 
 <script>
@@ -278,15 +284,27 @@ nav .gps-button {
   padding-top: 6rem;
 }
 
-.highlights {
-  margin: 6rem 5vw 8rem;
+.forecasts {
+  width: 70%;
+  margin: 0 auto 7rem;
+  padding: 0 2rem;
+  display: grid;
+  column-gap: 2rem;
+  row-gap: 3rem;
+  justify-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
 }
 
-.highlights h2 {
+#aditional-details h2 {
   font-weight: bold;
   font-size: 2.3rem;
 
   color: #e7e7eb;
+  margin-left: 5vw;
+}
+
+.highlights {
+  margin: 6rem 5vw 8rem;
 }
 
 .highlights .highlight {
@@ -356,5 +374,62 @@ footer {
 
   color: #616475;
   padding-bottom: 2rem;
+}
+
+@media screen and (min-width: 1100px) {
+  #app {
+    display: grid;
+    grid-template-columns: 500px 1fr;
+  }
+
+  .left-container {
+    grid-column: 1 / 2;
+    position: relative;
+  }
+
+  .right-container {
+    grid-column: 2 / 3;
+    position: relative;
+  }
+
+  nav {
+    position: absolute;
+    width: 500px;
+    padding: 0 50px;
+  }
+
+  .lateral-view {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+  }
+
+  #today-forecast {
+    height: 100vh;
+  }
+
+  #aditional-details {
+    padding: 30px 150px 0;
+  }
+
+  .forecasts {
+    display: flex;
+    margin: 0;
+    margin-bottom: 70px;
+    padding: 0;
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .highlights {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 0;
+    padding: 0;
+    column-gap: 50px;
+  }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div id="search-area">
+  <div class="search-area">
     <header>
       <span class="material-icons" @click="close"> clear </span>
 
@@ -61,7 +61,7 @@ export default {
 </script>
 
 <style>
-#search-area {
+.search-area {
   position: fixed;
   background: #1e213a;
   left: 0;
@@ -73,24 +73,24 @@ export default {
   padding: 1rem;
 }
 
-#search-area header {
+.search-area header {
   width: 100%;
   display: flex;
   flex-direction: column;
 }
 
-#search-area header > .material-icons {
+.search-area header > .material-icons {
   color: white;
   cursor: pointer;
   align-self: flex-end;
 }
 
-#search-area .search-group {
+.search-area .search-group {
   display: flex;
   margin-top: 2.5rem;
 }
 
-#search-area .input-group {
+.search-area .input-group {
   border: 1px solid #e7e7eb;
   display: flex;
   align-items: center;
@@ -99,12 +99,12 @@ export default {
   margin-right: 1.5rem;
 }
 
-#search-area .input-group .material-icons {
+.search-area .input-group .material-icons {
   color: #616475;
   margin-right: 1rem;
 }
 
-#search-area .input-group input {
+.search-area .input-group input {
   background: transparent;
   border: none;
   font-size: 1.6rem;
@@ -112,7 +112,7 @@ export default {
   flex-grow: 1;
 }
 
-#search-area .search-group button {
+.search-area .search-group button {
   background: #3c47e9;
   border: none;
 
@@ -127,7 +127,7 @@ export default {
   transition: all 0.3s ease-out;
 }
 
-#search-area .search-group button:hover {
+.search-area .search-group button:hover {
   background: #1926e0;
 }
 

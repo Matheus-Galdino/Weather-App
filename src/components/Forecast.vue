@@ -47,17 +47,6 @@ export default {
 </script>
 
 <style>
-.forecasts {
-  width: 70%;
-  margin: 0 auto;
-  padding: 0 2rem;
-  display: grid;
-  column-gap: 1rem;
-  row-gap: 3rem;
-  justify-items: center;
-  grid-template-columns: 1fr 1fr;
-}
-
 .forecast {
   background: #1e213a;
   padding: 2rem;
